@@ -1,0 +1,102 @@
+openapi: 3.0.1
+info:
+  title: km API
+  version: 1.0.0
+
+paths:
+  /healthCheck:
+    get:
+      summary: Health Check
+      operationId: getHealthCheck
+      tags:
+        - healthCheck
+      responses:
+        '200':
+          description: OK
+        '500':
+          description: Unexpected
+          content:
+            application/json:
+              schema:
+                $ref: './components/definitions.yaml#/components/schemas/ErrorSchema'
+
+  /v1/users:
+    get:
+      summary: User
+      operationId: getUsers
+      tags:
+        - users
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: './components/response/users.yaml#/components/schemas/UsersResponse'
+        '500':
+          description: Unexpected
+          content:
+            application/json:
+              schema:
+                $ref: './components/definitions.yaml#/components/schemas/ErrorSchema'
+
+    post:
+      summary: User
+      operationId: postUser
+      tags:
+        - users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './components/request/users.yaml#/components/schemas/RegistUserRequest'
+      responses:
+        '204':
+          description: OK
+        '500':
+          description: Unexpected
+          content:
+            application/json:
+              schema:
+                $ref: './components/definitions.yaml#/components/schemas/ErrorSchema'
+
+  /v1/users/{id}:
+    parameters:
+      - $ref: "./components/definitions.yaml#/components/parameters/userId"
+
+    put:
+      summary: User
+      operationId: putUser
+      tags:
+        - users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './components/request/users.yaml#/components/schemas/EditUserRequest'
+      responses:
+        '204':
+          description: OK
+        '500':
+          description: Unexpected
+          content:
+            application/json:
+              schema:
+                $ref: './components/definitions.yaml#/components/schemas/ErrorSchema'
+
+    delete:
+      summary: User
+      operationId: deleteUser
+      tags:
+        - users
+      responses:
+        '204':
+          description: OK
+        '500':
+          description: Unexpected
+          content:
+            application/json:
+              schema:
+                $ref: './components/definitions.yaml#/components/schemas/ErrorSchema'

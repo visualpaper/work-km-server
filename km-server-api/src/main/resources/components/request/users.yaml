@@ -1,0 +1,21 @@
+components:
+  schemas:
+    RegistUserRequest:
+      type: object
+      required:
+        - id
+        - name
+      properties:
+        id:
+          $ref: "./../definitions.yaml#/components/schemas/UserId"
+        name:
+          $ref: "./../definitions.yaml#/components/schemas/UserName"
+
+    EditUserRequest:
+      type: object
+      required:
+        - id
+        - name
+      properties:
+        name:
+          $ref: "./../definitions.yaml#/components/schemas/UserName"

@@ -2,6 +2,8 @@ package org.visualpaper.work.km.server.impl.infrastructure.db.dto;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -23,11 +25,12 @@ import org.springframework.context.annotation.Scope;
 @Table(name = "TM_USER")
 public class TmUserDto {
 
-    // 必要であれば BigInteger でやること。
-    @Id
-    @Column(name = "ID")
-    private Integer id;
+  // 必要であれば BigInteger でやること。
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "ID")
+  private Integer id;
 
-    @Column(name = "NAME")
-    private String name;
+  @Column(name = "NAME")
+  private String name;
 }

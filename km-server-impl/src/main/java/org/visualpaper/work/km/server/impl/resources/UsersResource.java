@@ -6,19 +6,22 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.visualpaper.work.km.server.impl.application.UserFacade;
 import org.visualpaper.work.km.server.impl.application.adapter.UserAdapter;
 import org.visualpaper.work.km.server.impl.domain.user.User;
 import org.visualpaper.work.km.server.impl.domain.user.UserId;
-import org.visualpaper.work.km.server.impl.openapi.api.UsersApi;
-import org.visualpaper.work.km.server.impl.openapi.model.EditUserRequest;
-import org.visualpaper.work.km.server.impl.openapi.model.RegistUserRequest;
-import org.visualpaper.work.km.server.impl.openapi.model.UserSchema;
-import org.visualpaper.work.km.server.impl.openapi.model.UsersResponse;
+import org.visualpaper.work.km.server.impl.resources.schemas.users.EditUserRequestSchema;
+import org.visualpaper.work.km.server.impl.resources.schemas.users.RegistUserRequestSchema;
+import org.visualpaper.work.km.server.impl.resources.schemas.users.UserSchema;
+import org.visualpaper.work.km.server.impl.resources.schemas.users.GetUsersResponseScheme;
 
 @RestController
-public class UsersResource implements UsersApi {
+public class UsersResource {
 
   @Autowired
   private UserFacade facade;
@@ -30,8 +33,15 @@ public class UsersResource implements UsersApi {
    * Create User API.
    */
   @Nonnull
-  @Override
-  public ResponseEntity<Void> postUser(RegistUserRequest request) throws Exception {
+  @RequestMapping(
+      method = RequestMethod.POST,
+      value = "/v1/users",
+      produces = { "application/json" },
+      consumes = { "application/json" }
+  )
+  public ResponseEntity<Void> postUser(
+      @RequestBody RegistUserRequestSchema request
+  ) throws Exception {
 
     facade.registerUser(
         adapter.registerUserParamFrom(
@@ -46,40 +56,52 @@ public class UsersResource implements UsersApi {
    * Get Users API.
    */
   @Nonnull
-  @Override
-  public ResponseEntity<UsersResponse> getUsers() throws Exception {
+  @RequestMapping(
+      method = RequestMethod.GET,
+      value = "/v1/users",
+      produces = { "application/json" }
+  )
+  public ResponseEntity<GetUsersResponseScheme> getUsers() throws Exception {
     List<User> result = facade.getUsers();
 
+    GetUsersResponseScheme schema = new GetUsersResponseScheme();
+    schema.setUsers(
+        result.stream()
+            .map(this::createUserSchema)
+            .collect(Collectors.toList())
+    );
     return ResponseEntity.status(HttpStatus.OK)
-        .body(
-            new UsersResponse()
-                .users(
-                    result.stream()
-                        .map(this::createUserSchema)
-                        .collect(Collectors.toList())
-                )
-        );
+        .body(schema);
   }
 
   @Nonnull
   private UserSchema createUserSchema(@Nonnull User user) {
-    return new UserSchema()
-        .id(user.id().value())
-        .name(user.name());
+    UserSchema schema = new UserSchema();
+    schema.setId(user.id().value());
+    schema.setName(user.name());
+
+    return schema;
   }
 
   /**
    * Update User API.
    */
   @Nonnull
-  @Override
-  public ResponseEntity<Void> putUser(Integer id, EditUserRequest editUserRequest)
-      throws Exception {
+  @RequestMapping(
+      method = RequestMethod.PUT,
+      value = "/v1/users/{id}",
+      produces = { "application/json" },
+      consumes = { "application/json" }
+  )
+  public ResponseEntity<Void> putUser(
+      @PathVariable("id") Integer id,
+      @RequestBody EditUserRequestSchema request
+  ) throws Exception {
 
     facade.updateUser(
         adapter.updateUserNameParamFrom(
             id,
-            editUserRequest.getName()
+            request.getName()
         )
     );
     return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
@@ -89,8 +111,14 @@ public class UsersResource implements UsersApi {
    * Delete User API.
    */
   @Nonnull
-  @Override
-  public ResponseEntity<Void> deleteUser(Integer id) throws Exception {
+  @RequestMapping(
+      method = RequestMethod.DELETE,
+      value = "/v1/users/{id}",
+      produces = { "application/json" }
+  )
+  public ResponseEntity<Void> deleteUser(
+      @PathVariable("id") Integer id
+  ) throws Exception {
 
     facade.deleteUser(
         UserId.from(id)

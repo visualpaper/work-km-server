@@ -19,14 +19,6 @@
       <scope>provided</scope>
     </dependency>
 
-    <!-- api -->
-    <dependency>
-      <groupId>org.visualpaper.work</groupId>
-      <artifactId>km-server-api</artifactId>
-      <version>${project.version}</version>
-      <scope>compile</scope>
-    </dependency>
-
     <!-- db -->
     <dependency>
       <groupId>org.springframework.boot</groupId>

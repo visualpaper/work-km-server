@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 import org.visualpaper.work.km.server.impl.KmLogCode;
-import org.visualpaper.work.km.server.impl.openapi.model.ErrorSchema;
+import org.visualpaper.work.km.server.impl.resources.schemas.ErrorSchema;
 
 @ControllerAdvice
 public class KmExceptionHandler {
@@ -36,10 +36,11 @@ public class KmExceptionHandler {
     // エラーレスポンスを返却する。
     // ※ code と message を body に、HttpStatus をヘッダに置いている。
     // ※ エラーレスポンスとして見たときは取り急ぎ充分と見ている。
+    ErrorSchema schema = new ErrorSchema();
+    schema.setCode(logCode.getCode());
+    schema.setMessage(logCode.getMessage());
     return new ResponseEntity<>(
-        new ErrorSchema()
-            .code(logCode.getCode())
-            .message(logCode.getMessage()),
+        schema,
         HttpStatus.BAD_REQUEST
     );
   }
@@ -61,10 +62,11 @@ public class KmExceptionHandler {
     // エラーレスポンスを返却する。
     // ※ code と message を body に、HttpStatus をヘッダに置いている。
     // ※ エラーレスポンスとして見たときは取り急ぎ充分と見ている。
+    ErrorSchema schema = new ErrorSchema();
+    schema.setCode(logCode.getCode());
+    schema.setMessage(logCode.getMessage());
     return new ResponseEntity<>(
-        new ErrorSchema()
-            .code(logCode.getCode())
-            .message(logCode.getMessage()),
+        schema,
         HttpStatus.NOT_FOUND
     );
   }
@@ -84,10 +86,11 @@ public class KmExceptionHandler {
     // エラーレスポンスを返却する。
     // ※ code と message を body に、HttpStatus をヘッダに置いている。
     // ※ エラーレスポンスとして見たときは取り急ぎ充分と見ている。
+    ErrorSchema schema = new ErrorSchema();
+    schema.setCode(logCode.getCode());
+    schema.setMessage(logCode.getMessage());
     return new ResponseEntity<>(
-        new ErrorSchema()
-            .code(logCode.getCode())
-            .message(logCode.getMessage()),
+        schema,
         status
     );
   }

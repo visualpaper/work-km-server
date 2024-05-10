@@ -17,7 +17,6 @@
 	<name>km-server</name>
 
 	<modules>
-		<module>km-server-api</module>
 		<module>km-server-impl</module>
 	</modules>
 

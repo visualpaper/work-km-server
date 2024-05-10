@@ -11,11 +11,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.visualpaper.work.km.server.impl.KmLogCode;
 import org.visualpaper.work.km.server.impl.application.UserFacade;
 import org.visualpaper.work.km.server.impl.application.adapter.UserAdapter;
 import org.visualpaper.work.km.server.impl.domain.user.User;
 import org.visualpaper.work.km.server.impl.domain.user.UserId;
+import org.visualpaper.work.km.server.impl.exceptions.KmException;
 import org.visualpaper.work.km.server.impl.resources.schemas.users.EditUserRequestSchema;
+import org.visualpaper.work.km.server.impl.resources.schemas.users.GetUserResponseScheme;
 import org.visualpaper.work.km.server.impl.resources.schemas.users.RegistUserRequestSchema;
 import org.visualpaper.work.km.server.impl.resources.schemas.users.UserSchema;
 import org.visualpaper.work.km.server.impl.resources.schemas.users.GetUsersResponseScheme;
@@ -50,6 +53,33 @@ public class UsersResource {
         )
     );
     return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+  }
+
+  /**
+   * Get User API.
+   */
+  @Nonnull
+  @RequestMapping(
+      method = RequestMethod.GET,
+      value = "/v1/users/{id}",
+      produces = { "application/json" }
+  )
+  public ResponseEntity<GetUserResponseScheme> getUser(
+      @PathVariable("id") Integer id
+  ) throws Exception {
+    User result = facade.getUser(UserId.from(id));
+
+    if (result == null) {
+      throw new KmException(
+          KmLogCode.NOT_FOUND,
+          HttpStatus.NOT_FOUND
+      );
+    }
+    GetUserResponseScheme schema = new GetUserResponseScheme();
+    schema.setId(result.id().value());
+    schema.setName(result.name());
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(schema);
   }
 
   /**

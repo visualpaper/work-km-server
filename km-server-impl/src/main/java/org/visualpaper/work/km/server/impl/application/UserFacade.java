@@ -11,6 +11,9 @@ import org.visualpaper.work.km.server.impl.exceptions.KmException;
 public interface UserFacade {
 
   @Nonnull
+  User getUser(@Nonnull UserId id) throws KmException;
+
+  @Nonnull
   List<User> getUsers() throws KmException;
 
   void registerUser(

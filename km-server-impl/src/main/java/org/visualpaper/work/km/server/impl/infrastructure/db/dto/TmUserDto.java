@@ -5,6 +5,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.NamedStoredProcedureQueries;
+import jakarta.persistence.NamedStoredProcedureQuery;
+import jakarta.persistence.ParameterMode;
+import jakarta.persistence.StoredProcedureParameter;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,6 +20,16 @@ import org.springframework.context.annotation.Scope;
 /**
  * TM_USER テーブル Entity.
  */
+@NamedStoredProcedureQueries({ //
+    @NamedStoredProcedureQuery(
+        name = "GET_USER_SAMPLE_PROCEDURE_NAME",
+        procedureName = "GET_USER_SAMPLE_PROCEDURE",
+        parameters = {
+            @StoredProcedureParameter(mode = ParameterMode.IN, name = "target_id", type = Integer.class),
+            @StoredProcedureParameter(mode = ParameterMode.OUT, name = "id", type = Integer.class),
+            @StoredProcedureParameter(mode = ParameterMode.OUT, name = "name", type = String.class),
+        })
+})
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 @Data
 @Builder

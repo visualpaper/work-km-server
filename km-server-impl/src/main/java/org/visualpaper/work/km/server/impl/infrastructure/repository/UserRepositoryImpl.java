@@ -1,6 +1,10 @@
 package org.visualpaper.work.km.server.impl.infrastructure.repository;
 
 import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.StoredProcedureQuery;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +19,26 @@ import org.visualpaper.work.km.server.impl.infrastructure.db.dto.TmUserDto;
 @Repository
 public class UserRepositoryImpl implements UserRepository {
 
+  @PersistenceContext
+  private EntityManager em;
+
   @Autowired
   private TmUserDao dao;
+
+  @Nullable
+  @Override
+  public User find(@Nonnull UserId id) throws KmException {
+    StoredProcedureQuery query = this.em.createNamedStoredProcedureQuery("GET_USER_SAMPLE_PROCEDURE_NAME");
+    query.setParameter("target_id", id.value());
+    query.execute();
+
+    Integer resultId = (Integer) query.getOutputParameterValue("id");
+    String resultName = (String) query.getOutputParameterValue("name");
+    if (resultId == null) {
+      return null;
+    }
+    return new User(UserId.from(resultId), resultName);
+  }
 
   @Nonnull
   @Override

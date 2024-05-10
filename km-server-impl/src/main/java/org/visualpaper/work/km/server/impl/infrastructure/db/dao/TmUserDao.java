@@ -9,5 +9,4 @@ import org.visualpaper.work.km.server.impl.infrastructure.db.dto.TmUserDto;
  */
 @Repository
 public interface TmUserDao extends JpaRepository<TmUserDto, Integer> {
-
 }

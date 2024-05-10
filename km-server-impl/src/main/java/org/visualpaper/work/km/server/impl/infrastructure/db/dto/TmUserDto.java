@@ -26,6 +26,7 @@ import org.springframework.context.annotation.Scope;
         procedureName = "GET_USER_SAMPLE_PROCEDURE",
         parameters = {
             @StoredProcedureParameter(mode = ParameterMode.IN, name = "target_id", type = Integer.class),
+            @StoredProcedureParameter(mode = ParameterMode.OUT, name = "id", type = Integer.class),
             @StoredProcedureParameter(mode = ParameterMode.OUT, name = "name", type = String.class),
         })
 })

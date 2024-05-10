@@ -6,7 +6,6 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.StoredProcedureQuery;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -32,13 +31,13 @@ public class UserRepositoryImpl implements UserRepository {
     StoredProcedureQuery query = this.em.createNamedStoredProcedureQuery("GET_USER_SAMPLE_PROCEDURE_NAME");
     query.setParameter("target_id", id.value());
     query.execute();
-    String name = (String) query.getOutputParameterValue("name");
-//    Map<String, ?> map = dao.getUserSampleProcedure(id.value());
-//
-    if (name == null) {
+
+    Integer resultId = (Integer) query.getOutputParameterValue("id");
+    String resultName = (String) query.getOutputParameterValue("name");
+    if (resultId == null) {
       return null;
     }
-    return new User(id, name);
+    return new User(UserId.from(resultId), resultName);
   }
 
   @Nonnull

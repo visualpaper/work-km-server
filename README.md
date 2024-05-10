@@ -161,3 +161,40 @@ jobs:
         env:
           CI: false
 ```
+
+<br>
+
+ローカルマシンに Oracle インストールし、以下コマンドを実行済み
+
+```
+[テーブル]
+CREATE TABLE KUMEJIMA.TM_USER (
+  id NUMBER GENERATED ALWAYS AS IDENTITY,
+  name VARCHAR2(20 BYTE) NOT NULL,
+  PRIMARY KEY (id)
+)
+
+[ストアド作成]
+CREATE OR REPLACE PROCEDURE KUMEJIMA.GET_USER_SAMPLE_PROCEDURE
+(
+  target_id IN number,
+  id OUT number,
+  name OUT varchar2
+)
+IS
+BEGIN
+  select ID, NAME into id, name from KUMEJIMA.TM_USER
+  where ID = target_id;
+END;
+
+[ストアド確認]
+DECLARE
+  id NUMBER;
+  name VARCHAR2(20);
+BEGIN
+  KUMEJIMA.GET_USER_SAMPLE_PROCEDURE(41, id, name);
+  dbms_output.put_line(id);
+  dbms_output.put_line(name);
+END;
+
+```

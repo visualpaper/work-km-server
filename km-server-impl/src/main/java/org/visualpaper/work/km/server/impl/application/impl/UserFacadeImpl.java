@@ -20,6 +20,11 @@ public class UserFacadeImpl implements UserFacade {
   @Autowired
   private UserRepository repository;
 
+  @Override
+  public User getUser(UserId id) throws KmException {
+    return repository.find(id);
+  }
+
   @Nonnull
   @Override
   public List<User> getUsers() throws KmException {

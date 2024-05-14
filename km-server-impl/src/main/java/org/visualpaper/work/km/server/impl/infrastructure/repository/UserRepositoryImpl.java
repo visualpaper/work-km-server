@@ -3,7 +3,9 @@ package org.visualpaper.work.km.server.impl.infrastructure.repository;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.ParameterMode;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
 import jakarta.persistence.StoredProcedureQuery;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,10 +27,15 @@ public class UserRepositoryImpl implements UserRepository {
   @Autowired
   private TmUserDao dao;
 
+  /*
+   * StoredProcedure の例
   @Nullable
   @Override
   public User find(@Nonnull UserId id) throws KmException {
-    StoredProcedureQuery query = this.em.createNamedStoredProcedureQuery("GET_USER_SAMPLE_PROCEDURE_NAME");
+    StoredProcedureQuery query = this.em.createStoredProcedureQuery("GET_USER_SAMPLE_PROCEDURE");
+    query.registerStoredProcedureParameter("target_id", Integer.class, ParameterMode.IN);
+    query.registerStoredProcedureParameter("id", Integer.class, ParameterMode.OUT);
+    query.registerStoredProcedureParameter("name", String.class, ParameterMode.OUT);
     query.setParameter("target_id", id.value());
     query.execute();
 
@@ -38,6 +45,22 @@ public class UserRepositoryImpl implements UserRepository {
       return null;
     }
     return new User(UserId.from(resultId), resultName);
+  }
+  */
+
+  /*
+   * StoredFunction の例
+   */
+  @Nullable
+  @Override
+  public User find(@Nonnull UserId id) throws KmException {
+    Query query = this.em.createNativeQuery(
+        "SELECT GET_USER_SAMPLE_FUNCTION(:target_id) from dual"
+    );
+    query.setParameter("target_id", id.value());
+    Object out = query.getSingleResult();
+
+    return new User(UserId.from(1), "aaa");
   }
 
   @Nonnull

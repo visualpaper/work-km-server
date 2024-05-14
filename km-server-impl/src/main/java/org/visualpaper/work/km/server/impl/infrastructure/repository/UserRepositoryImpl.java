@@ -7,6 +7,8 @@ import jakarta.persistence.ParameterMode;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 import jakarta.persistence.StoredProcedureQuery;
+import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,6 +68,29 @@ public class UserRepositoryImpl implements UserRepository {
   @Nonnull
   @Override
   public List<User> findAll() throws KmException {
+    StoredProcedureQuery query = this.em.createStoredProcedureQuery("GET_USERS_SAMPLE_CURSOR_PROCEDURE");
+    query.registerStoredProcedureParameter("target_id", Integer.class, ParameterMode.IN);
+    query.registerStoredProcedureParameter("out_cur", Class.class, ParameterMode.REF_CURSOR);
+    query.setParameter("target_id", 41);
+    query.execute();
+
+    List<Object[]> results = query.getResultList();
+
+    return results.stream()
+        .map(this::toUser)
+        .collect(Collectors.toList());
+  }
+
+  @Nonnull
+  public User toUser(Object[] result) {
+    return new User(UserId.from(((BigDecimal) result[0]).intValue()), (String)result[1]);
+  }
+
+  /*
+   * とりあえず退避
+  @Nonnull
+  @Override
+  public List<User> findAll() throws KmException {
     return dao.findAll().stream()
         .map(this::toUser)
         .collect(Collectors.toList());
@@ -75,6 +100,7 @@ public class UserRepositoryImpl implements UserRepository {
   private User toUser(@Nonnull TmUserDto dto) {
     return new User(UserId.from(dto.getId()), dto.getName());
   }
+  */
 
   @Override
   public void insert(@Nonnull User user) throws KmException {

@@ -25,10 +25,26 @@ public class StoredSampleResource {
       method = RequestMethod.GET,
       value = "/v1/storedProcedureSample/{id}"
   )
-  public ResponseEntity<Void> getUser(
+  public ResponseEntity<Void> storedProcedureSample(
       @PathVariable("id") Integer id
   ) throws Exception {
     repository.storedProcedureSample(UserId.from(id));
+
+    return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+  }
+
+  /**
+   * Stored Function Sample.
+   */
+  @Nonnull
+  @RequestMapping(
+      method = RequestMethod.GET,
+      value = "/v1/storedFunctionSample/{id}"
+  )
+  public ResponseEntity<Void> storedFunctionSample(
+      @PathVariable("id") Integer id
+  ) throws Exception {
+    repository.storedFunctionSample(UserId.from(id));
 
     return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
   }

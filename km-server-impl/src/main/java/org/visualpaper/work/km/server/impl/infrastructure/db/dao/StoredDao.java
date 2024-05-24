@@ -9,4 +9,5 @@ public interface StoredDao {
 
   void storedProcedureSample(@Nonnull Map<String, Object> params);
   void storedFunctionSample(@Nonnull Map<String, Object> params);
+  void storedSampleCursor(@Nonnull Map<String, Object> params);
 }

@@ -15,4 +15,17 @@
       #{target_id, mode=IN, jdbcType=INTEGER}
     )}
   </select>
+
+
+  <select id="storedSampleCursor" parameterType="java.util.HashMap" statementType="CALLABLE">
+    {call GET_USERS_SAMPLE_CURSOR_PROCEDURE(
+      #{target_id, jdbcType=INTEGER, mode=IN},
+      #{out_cur, jdbcType=CURSOR, mode=OUT, javaType=ResultSet, resultMap=storedSampleCursorResultMap}
+    )}
+  </select>
+
+  <resultMap id="storedSampleCursorResultMap" type="org.visualpaper.work.km.server.impl.infrastructure.db.dto.StoredCursorSampleResult">
+    <result property="id" column="id"/>
+    <result property="name" column="name"/>
+  </resultMap>
 </mapper>

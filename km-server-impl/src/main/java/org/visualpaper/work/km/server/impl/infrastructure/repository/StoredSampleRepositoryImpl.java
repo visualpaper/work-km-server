@@ -16,7 +16,6 @@ public class StoredSampleRepositoryImpl {
   @Autowired
   private StoredDao dao;
 
-  @Nullable
   public void storedProcedureSample(@Nonnull UserId id) throws KmException {
     Map<String, Object> params = new HashMap<>();
 
@@ -27,7 +26,6 @@ public class StoredSampleRepositoryImpl {
     System.out.println(params.get("name"));
   }
 
-  @Nullable
   public void storedFunctionSample(@Nonnull UserId id) throws KmException {
     Map<String, Object> params = new HashMap<>();
 
@@ -35,5 +33,14 @@ public class StoredSampleRepositoryImpl {
     dao.storedFunctionSample(params);
 
     System.out.println(params.get("table_count"));
+  }
+
+  public void storedSampleCursor(@Nonnull UserId id) throws KmException {
+    Map<String, Object> params = new HashMap<>();
+
+    params.put("target_id", id.value());
+    dao.storedSampleCursor(params);
+
+    System.out.println(params.get("out_cur"));
   }
 }

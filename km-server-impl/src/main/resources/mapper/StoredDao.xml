@@ -9,4 +9,10 @@
       #{name, jdbcType=VARCHAR, mode=OUT}
     )}
   </select>
+
+  <select id="storedFunctionSample" parameterType="java.util.HashMap" statementType="CALLABLE">
+    {#{table_count, mode=OUT, jdbcType=INTEGER} = call GET_USER_SAMPLE_FUNCTION(
+      #{target_id, mode=IN, jdbcType=INTEGER}
+    )}
+  </select>
 </mapper>

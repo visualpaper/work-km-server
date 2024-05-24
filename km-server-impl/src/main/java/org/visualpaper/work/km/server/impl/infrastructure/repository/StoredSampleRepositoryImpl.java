@@ -26,4 +26,14 @@ public class StoredSampleRepositoryImpl {
     System.out.println(params.get("id"));
     System.out.println(params.get("name"));
   }
+
+  @Nullable
+  public void storedFunctionSample(@Nonnull UserId id) throws KmException {
+    Map<String, Object> params = new HashMap<>();
+
+    params.put("target_id", id.value());
+    dao.storedFunctionSample(params);
+
+    System.out.println(params.get("table_count"));
+  }
 }

@@ -3,6 +3,7 @@ package org.visualpaper.work.km.server.impl.infrastructure.repository;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.visualpaper.work.km.server.impl.domain.user.User;
@@ -21,13 +22,20 @@ public class UserRepositoryImpl implements UserRepository {
   @Nullable
   @Override
   public User find(@Nonnull UserId id) throws KmException {
-    return new User(UserId.from(1), "aaa");
+    TmUserDto dto = dao.find(id.value());
+
+    if (dto == null) {
+      return null;
+    }
+    return toUser(dto);
   }
 
   @Nonnull
   @Override
   public List<User> findAll() throws KmException {
-    return List.of();
+    return dao.findAll().stream()
+        .map(this::toUser)
+        .collect(Collectors.toList());
   }
 
   @Nonnull
@@ -39,6 +47,8 @@ public class UserRepositoryImpl implements UserRepository {
   public void insert(@Nonnull User user) throws KmException {
     TmUserDto dto = new TmUserDto();
     dto.setName(user.name());
+
+    dao.insert(dto);
   }
 
   @Override
@@ -46,9 +56,12 @@ public class UserRepositoryImpl implements UserRepository {
     TmUserDto dto = new TmUserDto();
     dto.setId(user.id().value());
     dto.setName(user.name());
+
+    dao.update(dto);
   }
 
   @Override
   public void delete(@Nonnull UserId userId) throws KmException {
+    dao.delete(userId.value());
   }
 }

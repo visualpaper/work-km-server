@@ -48,4 +48,20 @@ public class StoredSampleResource {
 
     return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
   }
+
+  /**
+   * Stored Sample Cursor.
+   */
+  @Nonnull
+  @RequestMapping(
+      method = RequestMethod.GET,
+      value = "/v1/storedSampleCursor/{id}"
+  )
+  public ResponseEntity<Void> storedSampleCursor(
+      @PathVariable("id") Integer id
+  ) throws Exception {
+    repository.storedSampleCursor(UserId.from(id));
+
+    return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+  }
 }

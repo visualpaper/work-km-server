@@ -3,6 +3,7 @@ package org.visualpaper.work.km.server.impl.infrastructure.repository;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.visualpaper.work.km.server.impl.domain.user.User;
@@ -27,7 +28,9 @@ public class UserRepositoryImpl implements UserRepository {
   @Nonnull
   @Override
   public List<User> findAll() throws KmException {
-    return List.of();
+    return dao.findAll().stream()
+        .map(this::toUser)
+        .collect(Collectors.toList());
   }
 
   @Nonnull

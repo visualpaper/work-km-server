@@ -13,4 +13,6 @@ public interface TmUserDao {
 
   @Nonnull
   List<TmUserDto> findAll();
+
+  int insert(@Nonnull TmUserDto dto);
 }

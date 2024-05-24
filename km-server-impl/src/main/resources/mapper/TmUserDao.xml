@@ -4,4 +4,9 @@
   <select id="findAll" resultType="org.visualpaper.work.km.server.impl.infrastructure.db.dto.TmUserDto">
     SELECT * FROM TM_USER
   </select>
+
+  <insert id="insert" parameterType="org.visualpaper.work.km.server.impl.infrastructure.db.dto.TmUserDto">
+    INSERT INTO TM_USER(name)
+    VALUES(#{name, jdbcType=VARCHAR})
+  </insert>
 </mapper>

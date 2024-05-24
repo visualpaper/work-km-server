@@ -42,6 +42,8 @@ public class UserRepositoryImpl implements UserRepository {
   public void insert(@Nonnull User user) throws KmException {
     TmUserDto dto = new TmUserDto();
     dto.setName(user.name());
+
+    dao.insert(dto);
   }
 
   @Override

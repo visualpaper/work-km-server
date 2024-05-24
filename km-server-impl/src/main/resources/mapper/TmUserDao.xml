@@ -5,6 +5,11 @@
     SELECT * FROM TM_USER
   </select>
 
+  <select id="find" resultType="org.visualpaper.work.km.server.impl.infrastructure.db.dto.TmUserDto">
+    SELECT * FROM TM_USER
+    WHERE id = #{id, jdbcType=INTEGER}
+  </select>
+
   <insert id="insert" parameterType="org.visualpaper.work.km.server.impl.infrastructure.db.dto.TmUserDto">
     INSERT INTO TM_USER(name)
     VALUES(#{name, jdbcType=VARCHAR})

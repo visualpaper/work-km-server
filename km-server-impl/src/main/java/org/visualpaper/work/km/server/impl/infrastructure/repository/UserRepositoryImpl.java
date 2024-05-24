@@ -22,7 +22,12 @@ public class UserRepositoryImpl implements UserRepository {
   @Nullable
   @Override
   public User find(@Nonnull UserId id) throws KmException {
-    return new User(UserId.from(1), "aaa");
+    TmUserDto dto = dao.find(id.value());
+
+    if (dto == null) {
+      return null;
+    }
+    return toUser(dto);
   }
 
   @Nonnull

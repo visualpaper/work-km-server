@@ -17,4 +17,6 @@ public interface TmUserDao {
   int insert(@Nonnull TmUserDto dto);
 
   int update(@Nonnull TmUserDto dto);
+
+  int delete(int id);
 }

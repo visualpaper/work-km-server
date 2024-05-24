@@ -57,5 +57,6 @@ public class UserRepositoryImpl implements UserRepository {
 
   @Override
   public void delete(@Nonnull UserId userId) throws KmException {
+    dao.delete(userId.value());
   }
 }

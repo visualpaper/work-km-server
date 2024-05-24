@@ -15,4 +15,9 @@
     SET name = #{name, jdbcType=VARCHAR}
     WHERE id = #{id, jdbcType=INTEGER}
   </update>
+
+  <delete id="delete">
+    DELETE FROM TM_USER
+    WHERE id = #{id, jdbcType=INTEGER}
+  </delete>
 </mapper>

@@ -51,6 +51,8 @@ public class UserRepositoryImpl implements UserRepository {
     TmUserDto dto = new TmUserDto();
     dto.setId(user.id().value());
     dto.setName(user.name());
+
+    dao.update(dto);
   }
 
   @Override

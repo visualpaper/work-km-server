@@ -9,4 +9,10 @@
     INSERT INTO TM_USER(name)
     VALUES(#{name, jdbcType=VARCHAR})
   </insert>
+
+  <update id="update" parameterType="org.visualpaper.work.km.server.impl.infrastructure.db.dto.TmUserDto">
+    UPDATE TM_USER
+    SET name = #{name, jdbcType=VARCHAR}
+    WHERE id = #{id, jdbcType=INTEGER}
+  </update>
 </mapper>
